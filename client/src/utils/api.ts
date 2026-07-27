@@ -1,35 +1,41 @@
-import axios from 'axios';
-import { useAuthStore } from '../store/useAuthStore';
+import axios from "axios";
+import { useAuthStore } from "../store/useAuthStore";
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 api.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().token;
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.response.use(
   (response) => {
     // Standardize backend response extraction
-    if (response.data && typeof response.data === 'object' && 'success' in response.data) {
+    if (
+      response.data &&
+      typeof response.data === "object" &&
+      "success" in response.data
+    ) {
       response.data = response.data.data;
     }
+
     return response;
   },
   (error) => {
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();
     }
+
     return Promise.reject(error);
   }
 );
