@@ -8,6 +8,7 @@ import { ShoppingBag, Minus, Plus } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
 import { useWishlistStore } from '../../store/useWishlistStore';
 import { Product } from '../../store/useProductStore';
+import ReviewSection from '../../components/ReviewSection';
 
 const ProductDetails = React.memo(function ProductDetails() {
   const { id } = useParams();
@@ -261,6 +262,9 @@ const ProductDetails = React.memo(function ProductDetails() {
             </div>
           </div>
         </motion.div>
+
+        {/* Reviews Section */}
+        <ReviewSection productId={product._id} />
 
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
