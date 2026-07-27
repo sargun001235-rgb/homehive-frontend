@@ -29,4 +29,10 @@ const productSchema = new Schema<IProduct>(
   { timestamps: true }
 );
 
+productSchema.index({ shopId: 1 });
+productSchema.index({ sellerId: 1 });
+productSchema.index({ category: 1 });
+productSchema.index({ price: 1 });
+productSchema.index({ createdAt: -1 });
+
 export const Product = mongoose.model<IProduct>('Product', productSchema);

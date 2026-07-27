@@ -1,66 +1,71 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import Wishlist from '../models/Wishlist';
+import catchAsync from '../utils/catchAsync';
+import AppError from '../utils/AppError';
 
-export const getWishlist = async (req: AuthRequest, res: Response) => {
-  try {
-    let wishlist = await Wishlist.findOne({ user: req.user?._id }).populate({
-      path: 'products',
-      populate: { path: 'shopId', select: 'name logo city verified' }
-    });
-    
-    if (!wishlist) {
-      wishlist = await Wishlist.create({ user: req.user?._id, products: [] });
-    }
-    
-    res.json(wishlist);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching wishlist', error });
+export const getWishlist = catchAsync(async (req: AuthRequest, res: Response) => {
+  let wishlist = await Wishlist.findOne({ user: req.user?._id }).populate({
+    path: 'products',
+    populate: { path: 'shopId', select: 'name logo city verified' }
+  }).lean();
+  
+  if (!wishlist) {
+    const newWishlist = await Wishlist.create({ user: req.user?._id, products: [] });
+    wishlist = newWishlist.toObject() as any;
   }
-};
+  
+  res.json({
+    success: true,
+    message: 'Wishlist retrieved successfully',
+    data: wishlist
+  });
+});
 
-export const addToWishlist = async (req: AuthRequest, res: Response) => {
-  try {
-    const { productId } = req.body;
-    
-    let wishlist = await Wishlist.findOne({ user: req.user?._id });
-    if (!wishlist) {
-      wishlist = new Wishlist({ user: req.user?._id, products: [] });
-    }
-
-    if (!wishlist.products.includes(productId as any)) {
-      wishlist.products.push(productId as any);
-      await wishlist.save();
-    }
-    
-    const updatedWishlist = await Wishlist.findById(wishlist._id).populate({
-      path: 'products',
-      populate: { path: 'shopId', select: 'name logo city verified' }
-    });
-    
-    res.json(updatedWishlist);
-  } catch (error) {
-    res.status(500).json({ message: 'Error adding to wishlist', error });
+export const addToWishlist = catchAsync(async (req: AuthRequest, res: Response) => {
+  const { productId } = req.body;
+  
+  let wishlist = await Wishlist.findOne({ user: req.user?._id });
+  if (!wishlist) {
+    wishlist = new Wishlist({ user: req.user?._id, products: [] });
   }
-};
 
-export const removeFromWishlist = async (req: AuthRequest, res: Response) => {
-  try {
-    const { productId } = req.params;
-    
-    const wishlist = await Wishlist.findOne({ user: req.user?._id });
-    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
-
-    wishlist.products = wishlist.products.filter(id => id.toString() !== productId);
+  if (!wishlist.products.includes(productId as any)) {
+    wishlist.products.push(productId as any);
     await wishlist.save();
-    
-    const updatedWishlist = await Wishlist.findById(wishlist._id).populate({
-      path: 'products',
-      populate: { path: 'shopId', select: 'name logo city verified' }
-    });
-    
-    res.json(updatedWishlist);
-  } catch (error) {
-    res.status(500).json({ message: 'Error removing from wishlist', error });
   }
-};
+  
+  const updatedWishlist = await Wishlist.findById(wishlist._id).populate({
+    path: 'products',
+    populate: { path: 'shopId', select: 'name logo city verified' }
+  }).lean();
+  
+  res.json({
+    success: true,
+    message: 'Added to wishlist',
+    data: updatedWishlist
+  });
+});
+
+export const removeFromWishlist = catchAsync(async (req: AuthRequest, res: Response) => {
+  const { productId } = req.params;
+  
+  const wishlist = await Wishlist.findOne({ user: req.user?._id });
+  if (!wishlist) {
+    throw new AppError('Wishlist not found', 404, 'WISHLIST_NOT_FOUND');
+  }
+
+  wishlist.products = wishlist.products.filter(id => id.toString() !== productId);
+  await wishlist.save();
+  
+  const updatedWishlist = await Wishlist.findById(wishlist._id).populate({
+    path: 'products',
+    populate: { path: 'shopId', select: 'name logo city verified' }
+  }).lean();
+  
+  res.json({
+    success: true,
+    message: 'Removed from wishlist',
+    data: updatedWishlist
+  });
+});

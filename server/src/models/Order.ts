@@ -97,4 +97,9 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
+orderSchema.index({ customer: 1 });
+orderSchema.index({ seller: 1 });
+orderSchema.index({ status: 1 });
+orderSchema.index({ createdAt: -1 });
+
 export default mongoose.model<IOrder>('Order', orderSchema);

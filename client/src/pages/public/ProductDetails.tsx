@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapPin, Store, Star, Share2, Heart, ArrowLeft, CheckCircle, Clock, ShieldCheck, User } from 'lucide-react';
 import api from '../../utils/api';
@@ -9,7 +9,7 @@ import { useCartStore } from '../../store/useCartStore';
 import { useWishlistStore } from '../../store/useWishlistStore';
 import { Product } from '../../store/useProductStore';
 
-export default function ProductDetails() {
+const ProductDetails = React.memo(function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<any>(null);
@@ -30,7 +30,6 @@ export default function ProductDetails() {
         const { data } = await api.get(`/product/${id}`);
         setProduct(data);
         
-        // Fetch related products by category
         if (data.category) {
           const res = await api.get('/product', { params: { category: data.category } });
           const filtered = res.data.filter((p: Product) => p._id !== data._id).slice(0, 4);
@@ -45,18 +44,18 @@ export default function ProductDetails() {
     fetchProductAndRelated();
   }, [id]);
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
     toast.success('Link copied to clipboard!');
-  };
+  }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!isZoomed) return;
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
     setMousePosition({ x, y });
-  };
+  }, [isZoomed]);
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -134,6 +133,7 @@ export default function ProductDetails() {
                     <button 
                       key={idx}
                       onClick={() => setActiveImage(idx)}
+                      aria-label={`View image ${idx + 1}`}
                       className={`relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${activeImage === idx ? 'border-primary ring-2 ring-primary/20' : 'border-transparent hover:border-gray-300 opacity-70 hover:opacity-100'}`}
                     >
                       <img src={`http://localhost:5000${img}`} className="w-full h-full object-cover" alt="" />
@@ -150,11 +150,12 @@ export default function ProductDetails() {
                 <div className="flex space-x-2">
                   <button 
                     onClick={() => isInWishlist(product._id) ? removeFromWishlist(product._id) : addToWishlist(product._id)} 
+                    aria-label={isInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'}
                     className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm border border-gray-100 ${isInWishlist(product._id) ? 'bg-red-50 text-red-500 border-red-100' : 'bg-gray-50 text-gray-500 hover:text-red-500 hover:bg-red-50'}`}
                   >
                     <Heart className={`w-4 h-4 ${isInWishlist(product._id) ? 'fill-red-500' : ''}`} />
                   </button>
-                  <button onClick={handleShare} className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-blue-500 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100">
+                  <button onClick={handleShare} aria-label="Share product" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-blue-500 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100">
                     <Share2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -198,6 +199,7 @@ export default function ProductDetails() {
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
                     className="w-12 h-full flex items-center justify-center text-gray-600 hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-50"
                   >
                     <Minus className="w-4 h-4" />
@@ -206,6 +208,7 @@ export default function ProductDetails() {
                   <button 
                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                     disabled={quantity >= product.stock}
+                    aria-label="Increase quantity"
                     className="w-12 h-full flex items-center justify-center text-gray-600 hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-50"
                   >
                     <Plus className="w-4 h-4" />
@@ -293,4 +296,6 @@ export default function ProductDetails() {
       </div>
     </div>
   );
-}
+});
+
+export default ProductDetails;

@@ -43,4 +43,7 @@ const shopSchema = new Schema<IShop>(
   { timestamps: true }
 );
 
+shopSchema.index({ city: 1 });
+shopSchema.index({ category: 1 });
+
 export const Shop = mongoose.model<IShop>('Shop', shopSchema);

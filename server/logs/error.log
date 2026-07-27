@@ -1,0 +1,34 @@
+2026-07-24 08:07:01 error: 500 - Shop not found - /api/shop/me - GET - ::1 - Error: Shop not found
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\controllers\shopController.ts:46:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-24 08:07:01 error: 500 - Shop not found - /api/shop/me - GET - ::1 - Error: Shop not found
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\controllers\shopController.ts:46:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-24 08:08:29 error: 500 - Not authorized, no token - /api/cart/add - POST - ::1 - Error: Not authorized, no token
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\middleware\authMiddleware.ts:19:17)
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\utils\catchAsync.ts:5:21)
+    at Layer.handle [as handle_request] (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\layer.js:95:5)
+2026-07-24 08:17:45 error: 500 - Shop not found - /api/shop/me - GET - ::1 - Error: Shop not found
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\controllers\shopController.ts:46:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-24 08:17:45 error: 500 - Shop not found - /api/shop/me - GET - ::1 - Error: Shop not found
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\controllers\shopController.ts:46:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-24 08:19:38 error: 500 - Not authorized, no token - /api/cart/add - POST - ::1 - Error: Not authorized, no token
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\middleware\authMiddleware.ts:19:17)
+    at <anonymous> (C:\Users\Sargun\Desktop\homehive\server\src\utils\catchAsync.ts:5:21)
+    at Layer.handle [as handle_request] (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\Sargun\Desktop\homehive\server\node_modules\express\lib\router\layer.js:95:5)

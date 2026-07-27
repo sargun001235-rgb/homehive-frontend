@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, CheckCircle, Clock, Phone, Instagram, Facebook, Share2, Grid, Package, Search, ChevronDown, ArrowLeft, Star, Store } from 'lucide-react';
 import api from '../../utils/api';
@@ -11,7 +11,7 @@ const SORT_OPTIONS = [
   { value: 'price-high-low', label: 'Price: High to Low' }
 ];
 
-export default function ShopPage() {
+const ShopPage = React.memo(function ShopPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [shop, setShop] = useState<any>(null);
@@ -60,10 +60,10 @@ export default function ShopPage() {
     setDisplayedProducts(filtered);
   }, [searchTerm, sortBy, allProducts]);
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
     toast.success('Shop link copied to clipboard!');
-  };
+  }, []);
 
   const renderSkeleton = () => (
     Array.from({ length: 5 }).map((_, i) => (
@@ -143,7 +143,7 @@ export default function ShopPage() {
                 <button className="bg-foreground text-white px-8 py-3 rounded-full font-bold hover:bg-black transition-all flex items-center shadow-lg shadow-black/10 hover:-translate-y-0.5">
                   Follow Shop
                 </button>
-                <button onClick={handleShare} className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors border border-gray-200">
+                <button onClick={handleShare} aria-label="Share shop" className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors border border-gray-200">
                   <Share2 className="w-5 h-5" />
                 </button>
               </div>
@@ -281,4 +281,6 @@ export default function ShopPage() {
       </div>
     </div>
   );
-}
+});
+
+export default ShopPage;
