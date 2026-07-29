@@ -98,7 +98,7 @@ export default function CustomerDashboard() {
             </Link>
             <div className="hidden sm:block">
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">
-                HomeHive
+                GharSe
               </span>
             </div>
           </div>

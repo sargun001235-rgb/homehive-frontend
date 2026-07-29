@@ -33,7 +33,7 @@ export default function Navbar() {
               <Store className="h-7 w-7 text-primary" />
             </div>
             <span className="text-2xl font-bold tracking-tight text-foreground">
-              HomeHive
+              GharSe
             </span>
           </Link>
 

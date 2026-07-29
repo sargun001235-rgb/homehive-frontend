@@ -26,7 +26,7 @@ export default function MassMedia() {
             </h2>
             
             <p className="text-xl text-foreground/60 mb-10 leading-relaxed">
-              HomeHive seamlessly integrates with your existing social presence. Upload rich media, sync with Instagram, and let your customers order directly from WhatsApp.
+              GharSe seamlessly integrates with your existing social presence. Upload rich media, sync with Instagram, and let your customers order directly from WhatsApp.
             </p>
             
             <div className="space-y-6">
@@ -68,7 +68,7 @@ export default function MassMedia() {
                 <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=400" className="w-full h-1/2 object-cover" alt="Phone App" />
                 <div className="p-4 bg-white rounded-t-3xl -mt-6 relative z-10 h-full">
                   <h3 className="font-bold text-lg mb-1">Sarah's Bakehouse</h3>
-                  <p className="text-xs text-gray-500 mb-4">homehive.com/sarahsbakehouse</p>
+                  <p className="text-xs text-gray-500 mb-4">gharse.com/sarahsbakehouse</p>
                   <div className="flex space-x-2 mb-4">
                     <button className="flex-1 bg-primary text-white py-2 rounded-xl text-sm font-semibold">Share Shop</button>
                   </div>

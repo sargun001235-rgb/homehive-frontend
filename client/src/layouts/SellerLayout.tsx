@@ -46,7 +46,7 @@ export default function SellerLayout() {
       {/* Sidebar */}
       <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'} flex flex-col z-20`}>
         <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100">
-          {isSidebarOpen && <span className="font-bold text-xl text-foreground truncate">HomeHive Seller</span>}
+          {isSidebarOpen && <span className="font-bold text-xl text-foreground truncate">GharSe Seller</span>}
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 mx-auto">
             <Menu className="w-5 h-5" />
           </button>

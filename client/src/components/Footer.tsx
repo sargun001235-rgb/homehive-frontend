@@ -14,7 +14,7 @@ export default function Footer() {
                 <Store className="h-6 w-6 text-primary" />
               </div>
               <span className="text-2xl font-bold tracking-tight text-foreground">
-                HomeHive
+                GharSe
               </span>
             </Link>
             <p className="text-foreground/70 max-w-sm mb-8 text-lg leading-relaxed">
@@ -61,7 +61,7 @@ export default function Footer() {
         
         <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-foreground/50 text-sm">
-            © {new Date().getFullYear()} HomeHive Inc. All rights reserved.
+            © {new Date().getFullYear()} GharSe Inc. All rights reserved.
           </p>
           <div className="flex items-center space-x-6 text-sm text-foreground/50">
             <a href="#" className="hover:text-primary transition-colors">Privacy</a>

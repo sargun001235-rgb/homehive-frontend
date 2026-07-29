@@ -51,7 +51,7 @@ export default function Register() {
     <div className="w-full">
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-foreground mb-2">Create an account</h2>
-        <p className="text-foreground/60">Join HomeHive and connect with your local community.</p>
+        <p className="text-foreground/60">Join GharSe and connect with your local community.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-8">

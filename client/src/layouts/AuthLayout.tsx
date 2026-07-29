@@ -29,7 +29,7 @@ export default function AuthLayout() {
               <Store className="h-10 w-10 text-primary" />
             </div>
             <span className="text-4xl font-bold tracking-tight text-foreground">
-              HomeHive
+              GharSe
             </span>
           </Link>
           

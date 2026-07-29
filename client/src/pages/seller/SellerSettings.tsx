@@ -31,7 +31,7 @@ export default function SellerSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-bold text-foreground">Marketing Emails</p>
-                <p className="text-sm text-foreground/60">Receive tips and updates from HomeHive</p>
+                <p className="text-sm text-foreground/60">Receive tips and updates from GharSe</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" className="sr-only peer" />
