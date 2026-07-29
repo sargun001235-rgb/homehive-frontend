@@ -107,7 +107,7 @@ const ProductDetails = React.memo(function ProductDetails() {
               >
                 {product.images && product.images.length > 0 ? (
                   <img 
-                    src={`http://localhost:5000${product.images[activeImage]}`} 
+                    src={`${product.images[activeImage]}`} 
                     className="w-full h-full object-cover transition-transform duration-200 ease-out" 
                     style={{
                       transform: isZoomed ? 'scale(2)' : 'scale(1)',
@@ -137,7 +137,7 @@ const ProductDetails = React.memo(function ProductDetails() {
                       aria-label={`View image ${idx + 1}`}
                       className={`relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${activeImage === idx ? 'border-primary ring-2 ring-primary/20' : 'border-transparent hover:border-gray-300 opacity-70 hover:opacity-100'}`}
                     >
-                      <img src={`http://localhost:5000${img}`} className="w-full h-full object-cover" alt="" />
+                      <img src={`${img}`} className="w-full h-full object-cover" alt="" />
                     </button>
                   ))}
                 </div>
@@ -234,7 +234,7 @@ const ProductDetails = React.memo(function ProductDetails() {
                   <div className="flex items-start space-x-4">
                     <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex items-center justify-center">
                       {product.shopId.logo ? (
-                        <img src={`http://localhost:5000${product.shopId.logo}`} className="w-full h-full object-cover" />
+                        <img src={`${product.shopId.logo}`} className="w-full h-full object-cover" />
                       ) : (
                         <Store className="w-8 h-8 text-gray-300" />
                       )}
@@ -283,7 +283,7 @@ const ProductDetails = React.memo(function ProductDetails() {
                 >
                   <div className="relative h-48 bg-gray-100 overflow-hidden">
                     {p.images?.[0] ? (
-                      <img src={`http://localhost:5000${p.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.title} />
+                      <img src={`${p.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.title} />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-300">No Image</div>
                     )}

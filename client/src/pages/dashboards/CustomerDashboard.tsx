@@ -307,7 +307,7 @@ export default function CustomerDashboard() {
                 >
                   <div className="relative h-48 md:h-56 bg-gray-100 overflow-hidden block">
                     {product.images?.[0] ? (
-                      <img src={`http://localhost:5000${product.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.title} />
+                      <img src={`${product.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.title} />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-50">
                         <Store className="w-8 h-8 mb-2 opacity-20" />
@@ -327,7 +327,7 @@ export default function CustomerDashboard() {
                       {product.title}
                     </h3>
                     <div className="flex items-center space-x-1.5 text-xs text-foreground/60 mb-4">
-                      {product.shopId?.logo ? <img src={`http://localhost:5000${product.shopId.logo}`} className="w-4 h-4 rounded-full border border-gray-200" /> : <Store className="w-3 h-3" />}
+                      {product.shopId?.logo ? <img src={`${product.shopId.logo}`} className="w-4 h-4 rounded-full border border-gray-200" /> : <Store className="w-3 h-3" />}
                       <span className="truncate hover:text-primary transition-colors">{product.shopId?.name || 'Local Seller'}</span>
                       {product.shopId?.verified && <Check className="w-3 h-3 text-blue-500 ml-1" />}
                     </div>
@@ -425,7 +425,7 @@ export default function CustomerDashboard() {
                       <Heart className="w-4 h-4 fill-red-500" />
                     </button>
                     <div className="relative h-48 bg-gray-100 overflow-hidden cursor-pointer" onClick={() => navigate(`/product/${product._id}`)}>
-                      {product.images?.[0] && <img src={`http://localhost:5000${product.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />}
+                      {product.images?.[0] && <img src={`${product.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />}
                     </div>
                     <div className="p-4 flex flex-col flex-1">
                       <h3 className="font-bold text-foreground line-clamp-1 mb-2">{product.title}</h3>

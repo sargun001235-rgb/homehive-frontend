@@ -199,7 +199,7 @@ export default function CheckoutPage() {
                   <div key={item.product._id} className="flex justify-between items-start text-sm">
                     <div className="flex gap-3 w-3/4">
                       <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                        {item.product.images?.[0] && <img src={`http://localhost:5000${item.product.images[0]}`} className="w-full h-full object-cover" />}
+                        {item.product.images?.[0] && <img src={`${item.product.images[0]}`} className="w-full h-full object-cover" />}
                       </div>
                       <div>
                         <p className="font-bold text-foreground line-clamp-1">{item.product.title}</p>

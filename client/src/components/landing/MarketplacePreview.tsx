@@ -96,7 +96,7 @@ export default function MarketplacePreview() {
               <div className="relative h-56 overflow-hidden bg-gray-100">
                 {product.images && product.images[0] ? (
                   <img 
-                    src={`http://localhost:5000${product.images[0]}`} 
+                    src={`${product.images[0]}`} 
                     alt={product.title} 
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
@@ -125,7 +125,7 @@ export default function MarketplacePreview() {
                 
                 <div className="flex items-center space-x-3 mb-6" onClick={(e) => { e.stopPropagation(); navigate(`/shop/${product.shopId?._id}`); }}>
                   {product.shopId?.logo ? (
-                    <img src={`http://localhost:5000${product.shopId.logo}`} className="w-8 h-8 rounded-full border border-gray-200 object-cover" />
+                    <img src={`${product.shopId.logo}`} className="w-8 h-8 rounded-full border border-gray-200 object-cover" />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 border border-gray-200">
                       <Store className="w-4 h-4" />

@@ -157,7 +157,7 @@ export default function SellerAnalytics() {
                   <div key={product._id} className="flex items-center p-3 hover:bg-gray-50 rounded-2xl transition-colors border border-transparent hover:border-gray-100">
                     <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 mr-4">
                       {product.image ? (
-                        <img src={`http://localhost:5000${product.image}`} alt={product.title} className="w-full h-full object-cover" />
+                        <img src={`${product.image}`} alt={product.title} className="w-full h-full object-cover" />
                       ) : (
                         <Package className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                       )}

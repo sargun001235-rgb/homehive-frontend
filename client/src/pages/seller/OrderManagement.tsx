@@ -174,7 +174,7 @@ export default function OrderManagement() {
                                   {order.items.map((item: any) => (
                                     <div key={item._id} className="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
                                       <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                                        {item.product.images?.[0] && <img src={`http://localhost:5000${item.product.images[0]}`} className="w-full h-full object-cover" />}
+                                        {item.product.images?.[0] && <img src={`${item.product.images[0]}`} className="w-full h-full object-cover" />}
                                       </div>
                                       <div className="flex-1">
                                         <div className="font-bold text-sm text-foreground">{item.product.title}</div>

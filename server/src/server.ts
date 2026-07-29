@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { v2 as cloudinary } from 'cloudinary';
 import authRoutes from './routes/authRoutes';
 import shopRoutes from './routes/shopRoutes';
 import productRoutes from './routes/productRoutes';
@@ -22,6 +23,12 @@ import { notFound, errorHandler } from './middleware/errorMiddleware';
 import logger from './utils/logger';
 
 dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const app = express();
 
@@ -76,15 +83,29 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
 // Upload endpoint
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image'), async (req, res) => {
   if (req.file) {
-    res.json({
-      success: true,
-      message: 'File uploaded successfully',
-      data: {
-        url: `/${req.file.path.replace(/\\/g, '/')}`,
-      },
-    });
+    try {
+      const b64 = Buffer.from(req.file.buffer).toString('base64');
+      const dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+      const result = await cloudinary.uploader.upload(dataURI, {
+        folder: 'homehive',
+        resource_type: 'auto'
+      });
+      res.json({
+        success: true,
+        message: 'File uploaded successfully',
+        data: {
+          url: result.secure_url,
+        },
+      });
+    } catch (error) {
+      logger.error('Cloudinary upload error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to upload image',
+      });
+    }
   } else {
     res.status(400).json({
       success: false,
@@ -92,9 +113,6 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     });
   }
 });
-
-// Static uploads
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Health check
 app.get('/api/health', (req, res) => {

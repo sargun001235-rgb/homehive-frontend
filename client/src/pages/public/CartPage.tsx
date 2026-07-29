@@ -81,7 +81,7 @@ export default function CartPage() {
                     <div className="flex w-full sm:w-3/5 items-center mb-4 sm:mb-0">
                       <div className="w-24 h-24 bg-gray-100 rounded-2xl overflow-hidden flex-shrink-0 cursor-pointer" onClick={() => navigate(`/product/${item.product._id}`)}>
                         {item.product.images?.[0] ? (
-                          <img src={`http://localhost:5000${item.product.images[0]}`} className="w-full h-full object-cover" alt={item.product.title} />
+                          <img src={`${item.product.images[0]}`} className="w-full h-full object-cover" alt={item.product.title} />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center"><Store className="w-8 h-8 text-gray-300" /></div>
                         )}

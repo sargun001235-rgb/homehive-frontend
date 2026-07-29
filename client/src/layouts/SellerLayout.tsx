@@ -100,7 +100,7 @@ export default function SellerLayout() {
                   <p className="text-xs text-foreground/50 capitalize">{myShop.name}</p>
                 </div>
                 <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold overflow-hidden border border-primary/20">
-                  {myShop.logo ? <img src={`http://localhost:5000${myShop.logo}`} alt="logo" className="w-full h-full object-cover"/> : user?.name?.charAt(0).toUpperCase()}
+                  {myShop.logo ? <img src={`${myShop.logo}`} alt="logo" className="w-full h-full object-cover"/> : user?.name?.charAt(0).toUpperCase()}
                 </div>
               </div>
             </div>

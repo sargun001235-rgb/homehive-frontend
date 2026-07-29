@@ -98,7 +98,7 @@ export default function SellerDashboard() {
                     <div className="flex items-center space-x-4">
                       <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden border border-gray-200">
                         {product.images?.[0] ? (
-                          <img src={`http://localhost:5000${product.images[0]}`} alt={product.title} className="w-full h-full object-cover" />
+                          <img src={`${product.images[0]}`} alt={product.title} className="w-full h-full object-cover" />
                         ) : (
                           <Package className="w-6 h-6 text-gray-400 m-auto mt-3" />
                         )}

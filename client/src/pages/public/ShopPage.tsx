@@ -109,7 +109,7 @@ const ShopPage = React.memo(function ShopPage() {
       {/* Banner */}
       <div className="h-64 md:h-80 w-full bg-gray-200 relative overflow-hidden rounded-b-[3rem]">
         {shop.banner ? (
-          <img src={`http://localhost:5000${shop.banner}`} className="w-full h-full object-cover" alt="Banner" />
+          <img src={`${shop.banner}`} className="w-full h-full object-cover" alt="Banner" />
         ) : (
           <div className="w-full h-full bg-gradient-to-tr from-primary/30 to-accent/30 flex items-center justify-center">
              <Store className="w-24 h-24 text-white/50" />
@@ -124,7 +124,7 @@ const ShopPage = React.memo(function ShopPage() {
           
           <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white border-[6px] border-white shadow-xl overflow-hidden flex-shrink-0 z-10 -mt-12 md:mt-0 relative group">
             {shop.logo ? (
-              <img src={`http://localhost:5000${shop.logo}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Logo" />
+              <img src={`${shop.logo}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Logo" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-5xl font-bold text-primary bg-primary/10">{shop.name.charAt(0)}</div>
             )}
@@ -218,7 +218,7 @@ const ShopPage = React.memo(function ShopPage() {
               {/* Image */}
               <div className="relative h-48 bg-gray-100 overflow-hidden block">
                 {product.images?.[0] ? (
-                  <img src={`http://localhost:5000${product.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.title} />
+                  <img src={`${product.images[0]}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.title} />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-gray-300">
                     <Store className="w-8 h-8 mb-2 opacity-20" />

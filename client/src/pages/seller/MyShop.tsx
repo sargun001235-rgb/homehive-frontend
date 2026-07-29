@@ -31,7 +31,7 @@ export default function MyShop() {
         <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="h-48 md:h-64 bg-gray-100 relative">
             {myShop.banner ? (
-              <img src={`http://localhost:5000${myShop.banner}`} className="w-full h-full object-cover" />
+              <img src={`${myShop.banner}`} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-primary/20 to-accent/20"></div>
             )}
@@ -40,7 +40,7 @@ export default function MyShop() {
           <div className="px-8 pb-8 relative">
             <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full border-4 border-white shadow-xl flex items-center justify-center overflow-hidden -mt-12 md:-mt-16 mb-4 relative z-10">
               {myShop.logo ? (
-                <img src={`http://localhost:5000${myShop.logo}`} className="w-full h-full object-cover" />
+                <img src={`${myShop.logo}`} className="w-full h-full object-cover" />
               ) : (
                 <span className="text-4xl font-bold text-gray-300">{myShop.name.charAt(0)}</span>
               )}

@@ -35,7 +35,7 @@ export default function ProductFormModal({ isOpen, onClose, product }: ProductFo
         stock: product.stock,
       });
       if (product.images) {
-        setPreviewUrls(product.images.map((img: string) => `http://localhost:5000${img}`));
+        setPreviewUrls(product.images.map((img: string) => `${img}`));
       }
     } else {
       reset();
@@ -91,7 +91,7 @@ export default function ProductFormModal({ isOpen, onClose, product }: ProductFo
       
       let finalImages = product?.images || [];
       // Keep only images that are still in previewUrls
-      finalImages = finalImages.filter((img: string) => previewUrls.includes(`http://localhost:5000${img}`));
+      finalImages = finalImages.filter((img: string) => previewUrls.includes(`${img}`));
       
       finalImages = [...finalImages, ...uploadedImageUrls];
 
