@@ -4,6 +4,7 @@ import { useProductStore } from '../../store/useProductStore';
 import { Link } from 'react-router-dom';
 import ProductFormModal from '../../components/forms/ProductFormModal';
 import toast from 'react-hot-toast';
+import api from '../../utils/api';
 import { motion } from 'framer-motion';
 
 export default function ProductManagement() {
@@ -29,6 +30,16 @@ export default function ProductManagement() {
       } catch (error) {
         toast.error('Failed to delete');
       }
+    }
+  };
+
+  const handleToggleFeatured = async (id: string, isFeatured: boolean) => {
+    try {
+      await api.put(`/product/${id}`, { isFeatured: !isFeatured });
+      toast.success(!isFeatured ? 'Product featured!' : 'Product unfeatured');
+      fetchSellerProducts();
+    } catch (error) {
+      toast.error('Failed to update featured status');
     }
   };
 
@@ -135,6 +146,13 @@ export default function ProductManagement() {
                       </td>
                       <td className="py-4 px-6 text-right">
                         <div className="flex justify-end space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button 
+                            onClick={() => handleToggleFeatured(product._id, product.isFeatured)} 
+                            className={`p-2 transition-colors bg-white rounded-lg shadow-sm border border-gray-100 ${product.isFeatured ? 'text-yellow-500 hover:text-yellow-600' : 'text-gray-400 hover:text-yellow-500'}`}
+                            title={product.isFeatured ? "Unfeature Product" : "Feature Product"}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill={product.isFeatured ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                          </button>
                           <Link to={`/product/${product._id}`} className="p-2 text-gray-400 hover:text-primary transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
                             <Eye className="w-4 h-4" />
                           </Link>

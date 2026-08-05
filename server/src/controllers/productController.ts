@@ -69,7 +69,7 @@ export const getSellerProducts = catchAsync(async (req: AuthRequest, res: Respon
 });
 
 export const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const { category, search, minPrice, maxPrice, shopId, city, inStock, sortBy, minRating } = req.query;
+  const { category, search, minPrice, maxPrice, shopId, city, inStock, sortBy, minRating, featured } = req.query;
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 20;
   
@@ -78,6 +78,7 @@ export const getAllProducts = catchAsync(async (req: Request, res: Response) => 
   if (category) query.category = category;
   if (shopId) query.shopId = shopId;
   if (inStock === 'true') query.stock = { $gt: 0 };
+  if (featured === 'true') query.isFeatured = true;
   
   if (city) {
     const shops = await Shop.find({ city: { $regex: new RegExp(`^${city}$`, 'i') } }).lean();

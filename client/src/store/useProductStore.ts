@@ -10,6 +10,7 @@ export interface Product {
   stock: number;
   images: string[];
   tags: string[];
+  isFeatured: boolean;
   shopId?: any;
   sellerId?: any;
 }
@@ -17,10 +18,12 @@ export interface Product {
 interface ProductState {
   sellerProducts: Product[];
   marketplaceProducts: Product[];
+  featuredProducts: Product[];
   recentlyViewed: Product[];
   isLoading: boolean;
   fetchSellerProducts: () => Promise<void>;
   fetchMarketplaceProducts: (params?: any) => Promise<void>;
+  fetchFeaturedProducts: () => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
   addRecentlyViewed: (product: Product) => void;
 }
@@ -31,6 +34,7 @@ export const useProductStore = create<ProductState>((set, get) => {
   return {
     sellerProducts: [],
     marketplaceProducts: [],
+    featuredProducts: [],
     recentlyViewed: savedRecentlyViewed ? JSON.parse(savedRecentlyViewed) : [],
     isLoading: false,
     
@@ -51,6 +55,15 @@ export const useProductStore = create<ProductState>((set, get) => {
         set({ marketplaceProducts: data, isLoading: false });
       } catch (error) {
         set({ isLoading: false });
+      }
+    },
+
+    fetchFeaturedProducts: async () => {
+      try {
+        const { data } = await api.get('/product', { params: { featured: 'true', limit: 5 } });
+        set({ featuredProducts: data });
+      } catch (error) {
+        console.error('Failed to fetch featured products', error);
       }
     },
 

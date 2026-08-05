@@ -23,7 +23,7 @@ const SORT_OPTIONS = [
 export default function CustomerDashboard() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
-  const { marketplaceProducts, fetchMarketplaceProducts, isLoading, addRecentlyViewed } = useProductStore();
+  const { marketplaceProducts, featuredProducts, fetchFeaturedProducts, fetchMarketplaceProducts, isLoading, addRecentlyViewed } = useProductStore();
   const { customerOrders, fetchCustomerOrders, isLoading: loadingOrders } = useOrderStore();
   const { wishlistProducts, fetchWishlist, isLoading: loadingWishlist, removeFromWishlist } = useWishlistStore();
   const { addresses, fetchAddresses, isLoading: loadingAddresses, deleteAddress } = useAddressStore();
@@ -65,7 +65,8 @@ export default function CustomerDashboard() {
     fetchWishlist();
     fetchAddresses();
     fetchNotifications();
-  }, [fetchCustomerOrders, fetchWishlist, fetchAddresses, fetchNotifications]);
+    fetchFeaturedProducts();
+  }, [fetchCustomerOrders, fetchWishlist, fetchAddresses, fetchNotifications, fetchFeaturedProducts]);
 
   useEffect(() => {
     const params: any = {};
@@ -352,6 +353,54 @@ export default function CustomerDashboard() {
         {/* MARKETPLACE TAB */}
         {activeTab === 'marketplace' && (
           <>
+            {/* Featured Carousel */}
+            {featuredProducts.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-foreground">Featured Picks</h2>
+                  <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">Top Quality</span>
+                </div>
+                <div className="flex space-x-6 overflow-x-auto pb-6 scrollbar-hide snap-x">
+                  {featuredProducts.map((product, index) => (
+                    <motion.div
+                      key={product._id}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      onClick={() => {
+                        addRecentlyViewed(product);
+                        navigate(`/product/${product._id}`);
+                      }}
+                      className="snap-start min-w-[300px] md:min-w-[400px] bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer border border-gray-100 group relative flex flex-col h-[280px]"
+                    >
+                      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                      {product.images?.[0] ? (
+                        <img src={`${product.images[0]}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.title} />
+                      ) : (
+                        <div className="absolute inset-0 w-full h-full bg-gray-200"></div>
+                      )}
+                      
+                      <div className="relative z-20 mt-auto p-6 flex flex-col h-full justify-between">
+                        <div className="self-end bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30 text-white text-xs font-bold shadow-sm">
+                          Featured
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-white mb-2 line-clamp-1">{product.title}</h3>
+                          <div className="flex items-center justify-between">
+                            <span className="text-white/90 text-sm font-medium flex items-center">
+                              {product.shopId?.name || 'Local Seller'}
+                              {product.shopId?.verified && <Check className="w-3 h-3 text-blue-400 ml-1" />}
+                            </span>
+                            <span className="text-xl font-bold text-white bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl">₹{product.price}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">

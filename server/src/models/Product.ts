@@ -13,6 +13,7 @@ export interface IProduct extends Document {
   averageRating: number;
   numReviews: number;
   soldCount: number;
+  isFeatured: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,7 @@ const productSchema = new Schema<IProduct>(
     averageRating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
     soldCount: { type: Number, default: 0 },
+    isFeatured: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -42,5 +44,6 @@ productSchema.index({ price: 1 });
 productSchema.index({ createdAt: -1 });
 productSchema.index({ averageRating: -1 });
 productSchema.index({ soldCount: -1 });
+productSchema.index({ isFeatured: -1 });
 
 export const Product = mongoose.model<IProduct>('Product', productSchema);
