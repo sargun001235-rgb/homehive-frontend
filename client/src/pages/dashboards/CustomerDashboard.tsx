@@ -42,6 +42,7 @@ export default function CustomerDashboard() {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -458,24 +459,87 @@ export default function CustomerDashboard() {
             ) : (
               <div className="space-y-4">
                 {customerOrders.map(order => (
-                  <div key={order._id} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center">
-                    <div>
-                      <h4 className="font-bold text-foreground text-lg mb-1">{order.orderNumber}</h4>
-                      <p className="text-sm text-gray-500 mb-3">{new Date(order.createdAt).toLocaleDateString()} • {order.items.length} items</p>
-                      <div className="flex gap-2">
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                          order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
-                          'bg-blue-100 text-blue-700'
-                        }`}>
-                          {order.status}
-                        </span>
-                        <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">Total: ₹{order.totalAmount}</span>
+                  <div key={order._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center">
+                      <div>
+                        <h4 className="font-bold text-foreground text-lg mb-1">{order.orderNumber}</h4>
+                        <p className="text-sm text-gray-500 mb-3">{new Date(order.createdAt).toLocaleDateString()} • {order.items.length} items</p>
+                        <div className="flex gap-2">
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                            order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                            order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
+                            'bg-blue-100 text-blue-700'
+                          }`}>
+                            {order.status}
+                          </span>
+                          <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">Total: ₹{order.totalAmount}</span>
+                        </div>
+                      </div>
+                      <div className="mt-4 md:mt-0 flex gap-2">
+                        <button onClick={() => setExpandedOrder(expandedOrder === order._id ? null : order._id)} className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                          {expandedOrder === order._id ? 'Hide Details' : 'Track Order'}
+                          <ChevronDown className={`w-4 h-4 transition-transform ${expandedOrder === order._id ? 'rotate-180' : ''}`} />
+                        </button>
                       </div>
                     </div>
-                    <div className="mt-4 md:mt-0 flex gap-2">
-                      <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50">View Details</button>
-                    </div>
+                    
+                    {/* Expanded Timeline Content */}
+                    <AnimatePresence>
+                      {expandedOrder === order._id && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="border-t border-gray-100 bg-gray-50/50"
+                        >
+                          <div className="p-6 md:p-8">
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-6">Order Timeline</h4>
+                            <div className="relative pl-6 border-l-2 border-gray-200 space-y-6">
+                              {order.timeline?.map((event: any, idx: number) => (
+                                <div key={idx} className="relative">
+                                  <div className={`absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white shadow-sm ${
+                                    idx === order.timeline.length - 1 ? 'bg-primary' : 'bg-gray-300'
+                                  }`}></div>
+                                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
+                                    <div>
+                                      <h5 className={`font-bold ${idx === order.timeline.length - 1 ? 'text-foreground' : 'text-gray-500'}`}>{event.status}</h5>
+                                      <p className="text-sm text-gray-600 mt-1">{event.description}</p>
+                                      {event.location && <p className="text-xs text-gray-400 mt-1 flex items-center"><MapPin className="w-3 h-3 mr-1"/> {event.location}</p>}
+                                    </div>
+                                    <span className="text-xs font-bold text-gray-400 whitespace-nowrap">
+                                      {new Date(event.date).toLocaleString()}
+                                    </span>
+                                  </div>
+                                </div>
+                              ))}
+                              {(!order.timeline || order.timeline.length === 0) && (
+                                <p className="text-sm text-gray-500">No tracking updates yet.</p>
+                              )}
+                            </div>
+
+                            <div className="mt-8 pt-6 border-t border-gray-200">
+                              <h4 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">Items</h4>
+                              <div className="space-y-3">
+                                {order.items.map((item: any) => (
+                                  <div key={item._id} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100">
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+                                        {item.product.images?.[0] && <img src={`${item.product.images[0]}`} className="w-full h-full object-cover" />}
+                                      </div>
+                                      <div>
+                                        <p className="font-bold text-sm text-foreground">{item.product.title}</p>
+                                        <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                                      </div>
+                                    </div>
+                                    <span className="font-bold text-sm">₹{item.price * item.quantity}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 ))}
               </div>

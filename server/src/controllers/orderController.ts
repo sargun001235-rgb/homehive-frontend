@@ -86,6 +86,13 @@ export const createOrder = catchAsync(async (req: AuthRequest, res: Response) =>
     couponCode: discountAmount > 0 ? couponCode.toUpperCase() : undefined,
     totalAmount,
     status: 'Pending',
+    timeline: [
+      {
+        status: 'Pending',
+        date: new Date(),
+        description: 'Order placed successfully and is pending confirmation.',
+      }
+    ]
   });
 
   await order.save();
@@ -151,7 +158,7 @@ export const getOrderDetails = catchAsync(async (req: AuthRequest, res: Response
 });
 
 export const updateOrderStatus = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { status } = req.body;
+  const { status, description, location } = req.body;
   const order = await Order.findById(req.params.id);
   
   if (!order) {
@@ -160,6 +167,11 @@ export const updateOrderStatus = catchAsync(async (req: AuthRequest, res: Respon
   
   if (order.customer.toString() === req.user?._id?.toString() && status === 'Cancelled' && order.status === 'Pending') {
     order.status = 'Cancelled';
+    order.timeline.push({
+      status: 'Cancelled',
+      date: new Date(),
+      description: description || 'Order cancelled by customer.',
+    });
     await order.save();
     
     for (const item of order.items) {
@@ -178,6 +190,13 @@ export const updateOrderStatus = catchAsync(async (req: AuthRequest, res: Respon
   }
 
   order.status = status;
+  order.timeline.push({
+    status,
+    date: new Date(),
+    description: description || `Order status updated to ${status}.`,
+    location: location || undefined
+  });
+
   await order.save();
   
   res.json({

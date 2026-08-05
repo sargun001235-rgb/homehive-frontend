@@ -6,6 +6,13 @@ export interface IOrderItem {
   price: number; // Snapshot of price at purchase
 }
 
+export interface ITimelineEvent {
+  status: 'Pending' | 'Confirmed' | 'Preparing' | 'Ready for Pickup' | 'Out for Delivery' | 'Delivered' | 'Cancelled';
+  date: Date;
+  description: string;
+  location?: string;
+}
+
 export interface IOrder extends Document {
   orderNumber: string;
   customer: mongoose.Schema.Types.ObjectId;
@@ -26,6 +33,7 @@ export interface IOrder extends Document {
   couponCode?: string;
   totalAmount: number;
   status: 'Pending' | 'Confirmed' | 'Preparing' | 'Ready for Pickup' | 'Out for Delivery' | 'Delivered' | 'Cancelled';
+  timeline: ITimelineEvent[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -100,6 +108,14 @@ const orderSchema = new mongoose.Schema(
       enum: ['Pending', 'Confirmed', 'Preparing', 'Ready for Pickup', 'Out for Delivery', 'Delivered', 'Cancelled'],
       default: 'Pending',
     },
+    timeline: [
+      {
+        status: { type: String, required: true },
+        date: { type: Date, default: Date.now },
+        description: { type: String, required: true },
+        location: { type: String }
+      }
+    ]
   },
   {
     timestamps: true,
