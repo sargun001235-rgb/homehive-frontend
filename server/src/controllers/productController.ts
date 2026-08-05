@@ -69,7 +69,7 @@ export const getSellerProducts = catchAsync(async (req: AuthRequest, res: Respon
 });
 
 export const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const { category, search, minPrice, maxPrice, shopId, city, inStock, sortBy } = req.query;
+  const { category, search, minPrice, maxPrice, shopId, city, inStock, sortBy, minRating } = req.query;
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 20;
   
@@ -102,10 +102,16 @@ export const getAllProducts = catchAsync(async (req: Request, res: Response) => 
     if (maxPrice) query.price.$lte = Number(maxPrice);
   }
 
+  if (minRating) {
+    query.averageRating = { $gte: Number(minRating) };
+  }
+
   let sortOptions: any = { createdAt: -1 };
   if (sortBy === 'oldest') sortOptions = { createdAt: 1 };
   if (sortBy === 'price-low-high') sortOptions = { price: 1 };
   if (sortBy === 'price-high-low') sortOptions = { price: -1 };
+  if (sortBy === 'best-selling' || sortBy === 'trending') sortOptions = { soldCount: -1 };
+  if (sortBy === 'top-rated') sortOptions = { averageRating: -1 };
 
   const products = await Product.find(query)
     .populate('shopId', 'name logo verified city')

@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Store, ArrowLeft, User, LogOut, ShoppingBag, AlertCircle, ChevronDown, Check, SlidersHorizontal, MapPin, Heart, Package } from 'lucide-react';
+import { Search, Store, ArrowLeft, User, LogOut, ShoppingBag, AlertCircle, ChevronDown, Check, SlidersHorizontal, MapPin, Heart, Package, Bell } from 'lucide-react';
 import { useProductStore } from '../../store/useProductStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useOrderStore } from '../../store/useOrderStore';
 import { useWishlistStore } from '../../store/useWishlistStore';
 import { useAddressStore } from '../../store/useAddressStore';
+import { useNotificationStore } from '../../store/useNotificationStore';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CATEGORIES = ['All', 'Home Bakery', 'Handmade Crafts', 'Jewelry', 'Art & Paintings', 'Cloud Kitchen'];
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest Arrivals' },
+  { value: 'trending', label: 'Trending' },
+  { value: 'best-selling', label: 'Best Selling' },
+  { value: 'top-rated', label: 'Top Rated' },
   { value: 'price-low-high', label: 'Price: Low to High' },
   { value: 'price-high-low', label: 'Price: High to Low' },
   { value: 'oldest', label: 'Oldest' }
@@ -23,6 +27,7 @@ export default function CustomerDashboard() {
   const { customerOrders, fetchCustomerOrders, isLoading: loadingOrders } = useOrderStore();
   const { wishlistProducts, fetchWishlist, isLoading: loadingWishlist, removeFromWishlist } = useWishlistStore();
   const { addresses, fetchAddresses, isLoading: loadingAddresses, deleteAddress } = useAddressStore();
+  const { notifications, unreadCount, fetchNotifications, markAsRead } = useNotificationStore();
   
   const [activeTab, setActiveTab] = useState('marketplace');
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,17 +36,23 @@ export default function CustomerDashboard() {
   const [sortBy, setSortBy] = useState('newest');
   const [inStock, setInStock] = useState(false);
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [minRating, setMinRating] = useState('');
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
+        setIsNotificationsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -52,7 +63,8 @@ export default function CustomerDashboard() {
     fetchCustomerOrders();
     fetchWishlist();
     fetchAddresses();
-  }, [fetchCustomerOrders, fetchWishlist, fetchAddresses]);
+    fetchNotifications();
+  }, [fetchCustomerOrders, fetchWishlist, fetchAddresses, fetchNotifications]);
 
   useEffect(() => {
     const params: any = {};
@@ -63,13 +75,14 @@ export default function CustomerDashboard() {
     if (inStock) params.inStock = 'true';
     if (priceRange.min) params.minPrice = priceRange.min;
     if (priceRange.max) params.maxPrice = priceRange.max;
+    if (minRating) params.minRating = minRating;
     
     const timer = setTimeout(() => {
       fetchMarketplaceProducts(params);
     }, 500);
     
     return () => clearTimeout(timer);
-  }, [activeCategory, searchTerm, city, sortBy, inStock, priceRange, fetchMarketplaceProducts]);
+  }, [activeCategory, searchTerm, city, sortBy, inStock, priceRange, minRating, fetchMarketplaceProducts]);
 
   const renderSkeleton = () => (
     Array.from({ length: 8 }).map((_, i) => (
@@ -127,6 +140,64 @@ export default function CustomerDashboard() {
               <SlidersHorizontal className="w-4 h-4" />
               <span className="hidden sm:block">Filters</span>
             </button>
+
+            <div className="relative" ref={notifRef}>
+              <button 
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className="p-2.5 rounded-full text-gray-600 hover:bg-gray-100 transition-colors relative flex items-center justify-center"
+              >
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-2 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
+                )}
+              </button>
+              
+              <AnimatePresence>
+                {isNotificationsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-12 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 flex flex-col max-h-[400px]"
+                  >
+                    <div className="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50 sticky top-0">
+                      <h3 className="font-bold text-foreground">Notifications</h3>
+                      {unreadCount > 0 && (
+                        <button onClick={() => markAsRead('all')} className="text-xs font-bold text-primary hover:text-primary/80">
+                          Mark all read
+                        </button>
+                      )}
+                    </div>
+                    <div className="overflow-y-auto flex-1 p-2">
+                      {notifications.length === 0 ? (
+                        <div className="p-8 text-center text-gray-500 text-sm">
+                          <Bell className="w-8 h-8 mx-auto mb-2 opacity-20" />
+                          No notifications yet
+                        </div>
+                      ) : (
+                        notifications.map(notif => (
+                          <div 
+                            key={notif._id} 
+                            onClick={() => !notif.read && markAsRead(notif._id)}
+                            className={`p-3 rounded-xl mb-1 cursor-pointer transition-colors ${!notif.read ? 'bg-primary/5 hover:bg-primary/10' : 'hover:bg-gray-50'}`}
+                          >
+                            <div className="flex justify-between items-start mb-1">
+                              <h4 className={`text-sm ${!notif.read ? 'font-bold text-gray-900' : 'font-medium text-gray-700'}`}>{notif.title}</h4>
+                              {!notif.read && <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>}
+                            </div>
+                            <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{notif.message}</p>
+                            <span className="text-[10px] text-gray-400 mt-2 block font-medium">
+                              {new Date(notif.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             <button 
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -255,6 +326,19 @@ export default function CustomerDashboard() {
                     <span className="text-sm font-medium text-gray-700">In Stock Only</span>
                     <input type="checkbox" className="hidden" checked={inStock} onChange={(e) => setInStock(e.target.checked)} />
                   </label>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Minimum Rating</label>
+                  <div className="relative">
+                    <select value={minRating} onChange={(e) => setMinRating(e.target.value)} className="w-full pl-3 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none transition-all">
+                      <option value="">Any Rating</option>
+                      <option value="4">4 Stars & Above</option>
+                      <option value="3">3 Stars & Above</option>
+                      <option value="2">2 Stars & Above</option>
+                      <option value="1">1 Star & Above</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+                  </div>
                 </div>
               </div>
             </motion.div>
