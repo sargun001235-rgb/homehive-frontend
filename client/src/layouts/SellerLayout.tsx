@@ -1,4 +1,4 @@
-import { Store, Package, Plus, BarChart2, User, Settings, LogOut, Menu, ClipboardList, Bell } from 'lucide-react';
+import { Store, Package, Plus, BarChart2, User, Settings, LogOut, Menu, ClipboardList, Bell, Tag } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
@@ -50,6 +50,7 @@ export default function SellerLayout() {
     { icon: Store, label: 'My Shop', path: '/dashboard/seller/shop' },
     { icon: Package, label: 'Products', path: '/dashboard/seller/products' },
     { icon: Plus, label: 'Add Product', path: '/dashboard/seller/products?new=true' },
+    { icon: Tag, label: 'Coupons', path: '/dashboard/seller/coupons' },
     { icon: BarChart2, label: 'Analytics', path: '/dashboard/seller/analytics' },
     { icon: User, label: 'Profile', path: '/dashboard/seller/profile' },
     { icon: Settings, label: 'Settings', path: '/dashboard/seller/settings' },

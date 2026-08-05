@@ -22,6 +22,8 @@ export interface IOrder extends Document {
   specialInstructions?: string;
   subtotal: number;
   shippingCost: number;
+  discountAmount?: number;
+  couponCode?: string;
   totalAmount: number;
   status: 'Pending' | 'Confirmed' | 'Preparing' | 'Ready for Pickup' | 'Out for Delivery' | 'Delivered' | 'Cancelled';
   createdAt: Date;
@@ -81,6 +83,13 @@ const orderSchema = new mongoose.Schema(
     shippingCost: {
       type: Number,
       required: true,
+    },
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+    couponCode: {
+      type: String,
     },
     totalAmount: {
       type: Number,

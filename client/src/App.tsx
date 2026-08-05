@@ -14,6 +14,7 @@ const SellerDashboard = React.lazy(() => import('./pages/dashboards/SellerDashbo
 const SellerAnalytics = React.lazy(() => import('./pages/seller/SellerAnalytics'));
 const SellerProfile = React.lazy(() => import('./pages/seller/SellerProfile'));
 const SellerSettings = React.lazy(() => import('./pages/seller/SellerSettings'));
+const SellerCoupons = React.lazy(() => import('./pages/seller/SellerCoupons'));
 const MyShop = React.lazy(() => import('./pages/seller/MyShop'));
 const CustomerDashboard = React.lazy(() => import('./pages/dashboards/CustomerDashboard'));
 const CreateShop = React.lazy(() => import('./pages/seller/CreateShop'));
@@ -66,6 +67,7 @@ function App() {
               <Route path="/dashboard/seller/orders" element={<OrderManagement />} />
               <Route path="/dashboard/seller/shop" element={<MyShop />} />
               <Route path="/dashboard/seller/products" element={<ProductManagement />} />
+              <Route path="/dashboard/seller/coupons" element={<SellerCoupons />} />
               <Route path="/dashboard/seller/analytics" element={<SellerAnalytics />} />
               <Route path="/dashboard/seller/profile" element={<SellerProfile />} />
               <Route path="/dashboard/seller/settings" element={<SellerSettings />} />

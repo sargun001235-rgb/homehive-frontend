@@ -13,6 +13,7 @@ import addressRoutes from './routes/addressRoutes';
 import reviewRoutes from './routes/reviewRoutes';
 import analyticsRoutes from './routes/analyticsRoutes';
 import notificationRoutes from './routes/notificationRoutes';
+import couponRoutes from './routes/couponRoutes';
 import path from 'path';
 import { upload } from './utils/upload';
 import helmet from 'helmet';
@@ -83,6 +84,7 @@ app.use('/api/address', addressRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/coupons', couponRoutes);
 
 // Upload endpoint
 app.post('/api/upload', upload.single('image'), async (req, res) => {

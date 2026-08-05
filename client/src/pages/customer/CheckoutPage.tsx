@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, Truck, ShoppingBag, ShieldCheck } f
 import { useCartStore } from '../../store/useCartStore';
 import { useOrderStore } from '../../store/useOrderStore';
 import { useAddressStore } from '../../store/useAddressStore';
+import { useCouponStore } from '../../store/useCouponStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CheckoutPage() {
@@ -11,6 +12,7 @@ export default function CheckoutPage() {
   const { cartItems, cartTotal, fetchCart } = useCartStore();
   const { createOrder, isLoading: isOrdering } = useOrderStore();
   const { addresses, fetchAddresses } = useAddressStore();
+  const { validateCoupon, appliedCoupon, clearAppliedCoupon, isValidating } = useCouponStore();
   
   const [step, setStep] = useState(1);
   const [shippingAddress, setShippingAddress] = useState({
@@ -22,6 +24,7 @@ export default function CheckoutPage() {
     postalCode: ''
   });
   const [specialInstructions, setSpecialInstructions] = useState('');
+  const [couponCodeInput, setCouponCodeInput] = useState('');
 
   useEffect(() => {
     fetchCart();
@@ -42,6 +45,11 @@ export default function CheckoutPage() {
     }
   }, [addresses]);
 
+  useEffect(() => {
+    // Clear coupon when leaving page or unmounting
+    return () => clearAppliedCoupon();
+  }, [clearAppliedCoupon]);
+
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
@@ -58,15 +66,26 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = async () => {
     try {
-      const order = await createOrder(shippingAddress, specialInstructions);
+      const order = await createOrder(shippingAddress, specialInstructions, appliedCoupon?.code);
       navigate('/order-success', { state: { orderId: order.orderNumber } });
     } catch (error) {
       // Error handled in store
     }
   };
 
+  const handleApplyCoupon = async () => {
+    if (!couponCodeInput.trim()) return;
+    if (cartItems.length === 0) return;
+    const shopId = cartItems[0].product.shopId;
+    try {
+      await validateCoupon(couponCodeInput, shopId, cartTotal());
+    } catch (e) {}
+  };
+
   const shippingCost = 50;
-  const total = cartTotal() + shippingCost;
+  const subTotalAmount = cartTotal();
+  const discountAmount = appliedCoupon ? appliedCoupon.discountAmount : 0;
+  const total = subTotalAmount + shippingCost - discountAmount;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 pt-6 font-sans">
@@ -214,12 +233,46 @@ export default function CheckoutPage() {
               <div className="space-y-3 mb-6 text-sm font-medium border-t border-gray-100 pt-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span className="text-foreground">₹{cartTotal()}</span>
+                  <span className="text-foreground">₹{subTotalAmount}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Shipping</span>
                   <span className="text-foreground">₹{shippingCost}</span>
                 </div>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-green-600 font-bold">
+                    <span>Discount ({appliedCoupon.code})</span>
+                    <span>-₹{discountAmount}</span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="border-t border-gray-100 pt-6 pb-6">
+                {!appliedCoupon ? (
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      placeholder="Coupon Code" 
+                      value={couponCodeInput}
+                      onChange={(e) => setCouponCodeInput(e.target.value)}
+                      className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm uppercase" 
+                    />
+                    <button 
+                      onClick={handleApplyCoupon}
+                      disabled={isValidating || !couponCodeInput}
+                      className="px-4 py-2 bg-gray-900 text-white font-bold rounded-xl text-sm disabled:opacity-50"
+                    >
+                      {isValidating ? '...' : 'Apply'}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex justify-between items-center bg-green-50 border border-green-200 px-4 py-3 rounded-xl">
+                    <div className="flex items-center text-green-700 text-sm font-bold">
+                      <CheckCircle className="w-4 h-4 mr-2" /> Coupon Applied
+                    </div>
+                    <button onClick={clearAppliedCoupon} className="text-xs font-bold text-gray-500 hover:text-red-500">Remove</button>
+                  </div>
+                )}
               </div>
               
               <div className="border-t border-gray-100 pt-4">

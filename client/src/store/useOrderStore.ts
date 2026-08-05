@@ -10,7 +10,7 @@ interface OrderState {
   fetchCustomerOrders: () => Promise<void>;
   fetchSellerOrders: () => Promise<void>;
   fetchOrderDetails: (id: string) => Promise<void>;
-  createOrder: (shippingAddress: any, specialInstructions: string) => Promise<any>;
+  createOrder: (shippingAddress: any, specialInstructions: string, couponCode?: string) => Promise<any>;
   updateOrderStatus: (id: string, status: string) => Promise<void>;
 }
 
@@ -56,10 +56,10 @@ export const useOrderStore = create<OrderState>((set) => ({
     }
   },
 
-  createOrder: async (shippingAddress: any, specialInstructions: string) => {
+  createOrder: async (shippingAddress: any, specialInstructions: string, couponCode?: string) => {
     set({ isLoading: true });
     try {
-      const { data } = await api.post('/order/create', { shippingAddress, specialInstructions });
+      const { data } = await api.post('/order/create', { shippingAddress, specialInstructions, couponCode });
       return data;
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to place order');

@@ -3,11 +3,12 @@ import { AuthRequest } from '../middleware/authMiddleware';
 import Order from '../models/Order';
 import { Product } from '../models/Product';
 import Cart from '../models/Cart';
+import { Coupon } from '../models/Coupon';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/AppError';
 
 export const createOrder = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { shippingAddress, specialInstructions } = req.body;
+  const { shippingAddress, specialInstructions, couponCode } = req.body;
   
   const cart = await Cart.findOne({ user: req.user?._id }).populate('items.product');
   if (!cart || cart.items.length === 0) {
@@ -39,8 +40,36 @@ export const createOrder = catchAsync(async (req: AuthRequest, res: Response) =>
     await product.save();
   }
 
+  let discountAmount = 0;
+  
+  if (couponCode) {
+    const coupon = await Coupon.findOne({ code: couponCode.toUpperCase(), shopId: sellerId, isActive: true });
+    if (coupon) {
+      const now = new Date();
+      if (now >= new Date(coupon.startDate) && now <= new Date(coupon.endDate)) {
+        if (!coupon.usageLimit || coupon.usedCount < coupon.usageLimit) {
+          if (!coupon.minOrderValue || subtotal >= coupon.minOrderValue) {
+            if (coupon.discountType === 'fixed') {
+              discountAmount = coupon.discountValue;
+            } else {
+              discountAmount = (subtotal * coupon.discountValue) / 100;
+              if (coupon.maxDiscount && discountAmount > coupon.maxDiscount) {
+                discountAmount = coupon.maxDiscount;
+              }
+            }
+            if (discountAmount > subtotal) discountAmount = subtotal;
+            
+            // Increment usage count
+            coupon.usedCount += 1;
+            await coupon.save();
+          }
+        }
+      }
+    }
+  }
+
   const shippingCost = 50;
-  const totalAmount = subtotal + shippingCost;
+  const totalAmount = subtotal + shippingCost - discountAmount;
   
   const orderNumber = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 
@@ -53,6 +82,8 @@ export const createOrder = catchAsync(async (req: AuthRequest, res: Response) =>
     specialInstructions,
     subtotal,
     shippingCost,
+    discountAmount,
+    couponCode: discountAmount > 0 ? couponCode.toUpperCase() : undefined,
     totalAmount,
     status: 'Pending',
   });
