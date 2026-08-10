@@ -4,8 +4,8 @@ import { Star, CheckCircle } from 'lucide-react';
 const sellers = [
   {
     id: 1,
-    name: 'kangana Desai',
-    shop: 'Kangana Bakehouse',
+    name: 'Harpreet ',
+    shop: 'Harpreet Bakehouse',
     category: 'Home Baker',
     followers: '1.2k',
     products: 24,
@@ -16,8 +16,8 @@ const sellers = [
   {
     id: 2,
     name: 'Rahul Sharma',
-    shop: 'RS Woodworks',
-    category: 'Woodworker',
+    shop: 'RS Juteworks',
+    category: 'juteworker',
     followers: '850',
     products: 12,
     rating: 5.0,
@@ -26,9 +26,9 @@ const sellers = [
   },
   {
     id: 3,
-    name: 'Arjun',
-    shop: 'Arjun Ceramics',
-    category: 'Ceramics Artist',
+    name: 'Arjan Singh',
+    shop: 'Arjan Acrylics',
+    category: 'Acrylics Artist',
     followers: '2.1k',
     products: 45,
     rating: 4.8,
