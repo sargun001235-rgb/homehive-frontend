@@ -65,10 +65,10 @@ export default function MassMedia() {
             {/* Center Phone Mockup */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-[280px] h-[580px] bg-white rounded-[3rem] border-8 border-gray-900 shadow-2xl overflow-hidden">
               <div className="bg-gray-100 h-full w-full relative">
-                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=400" className="w-full h-1/2 object-cover" alt="Phone App" />
+                <img src="https://static.toiimg.com/thumb/msid-81419456,width-400,resizemode-4/81419456.jpg" className="w-full h-1/2 object-cover" alt="Phone App" />
                 <div className="p-4 bg-white rounded-t-3xl -mt-6 relative z-10 h-full">
-                  <h3 className="font-bold text-lg mb-1">Sarah's Bakehouse</h3>
-                  <p className="text-xs text-gray-500 mb-4">gharse.com/sarahsbakehouse</p>
+                  <h3 className="font-bold text-lg mb-1">Kamal's Kitchen</h3>
+                  <p className="text-xs text-gray-500 mb-4">gharse.com/KamalKitchen</p>
                   <div className="flex space-x-2 mb-4">
                     <button className="flex-1 bg-primary text-white py-2 rounded-xl text-sm font-semibold">Share Shop</button>
                   </div>
