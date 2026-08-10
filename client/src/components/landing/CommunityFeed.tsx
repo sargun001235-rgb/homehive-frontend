@@ -4,9 +4,9 @@ import { Heart, MessageCircle, Send, Bookmark } from 'lucide-react';
 const posts = [
   {
     id: 1,
-    seller: 'Sarah\'s Bakehouse',
+    seller: 'Priya\'s Bakery',
     avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100',
-    image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=600',
+    image: 'https://www.shutterstock.com/shutterstock/videos/3458981817/thumb/1.jpg?ip=x480',
     likes: 124,
     comments: 12,
     caption: 'Fresh batch of double chocolate chip cookies just out of the oven! 🍪 Available for local pickup until 6PM today. #HomeBaking #LocalGoodness'
