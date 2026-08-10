@@ -13,8 +13,8 @@ const posts = [
   },
   {
     id: 2,
-    seller: 'Art by Maya',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100',
+    seller: 'Gurpreet Arts',
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGDML6xGRxYN9BWBickJpmfE3TpASM0svP4AdhYenfzD6qpS1Lvi53DAYf&s=10',
     image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&q=80&w=600',
     likes: 89,
     comments: 5,
