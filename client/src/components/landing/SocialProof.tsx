@@ -26,7 +26,7 @@ const reviews = [
     location: 'Juhu',
     rating: 5,
     purchase: 'Ceramic Coffee Mug',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100',
+    avatar: 'https://img.magnific.com/free-photo/close-up-portrait-indian-hindu-girl-traditional-violet-saree-posed-street_627829-12971.jpg?semt=ais_test_b&w=740&q=80',
     text: 'Stunning craftsmanship! It feels so premium and unique. Delivery was super fast since Elena lives just two blocks away.'
   }
 ];
