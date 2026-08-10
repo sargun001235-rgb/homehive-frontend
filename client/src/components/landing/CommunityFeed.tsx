@@ -5,7 +5,7 @@ const posts = [
   {
     id: 1,
     seller: 'Priya\'s Bakery',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100',
+    avatar: 'https://st2.depositphotos.com/4158817/6135/i/450/depositphotos_61352589-Beautiful-young-Indian-traditional-woman.jpg',
     image: 'https://www.shutterstock.com/shutterstock/videos/3458981817/thumb/1.jpg?ip=x480',
     likes: 124,
     comments: 12,
