@@ -4,35 +4,35 @@ import { Star, CheckCircle } from 'lucide-react';
 const sellers = [
   {
     id: 1,
-    name: 'Sarah Jenkins',
-    shop: 'Sarah\'s Bakehouse',
+    name: 'kangana Desai',
+    shop: 'Kangana Bakehouse',
     category: 'Home Baker',
     followers: '1.2k',
     products: 24,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=300',
+    image: 'https://png.pngtree.com/background/20250201/original/pngtree-pretty-indian-woman-cute-indian-lady-photo-picture-image_3673184.jpg',
     cover: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=600'
   },
   {
     id: 2,
-    name: 'Marcus Thorne',
-    shop: 'Thorne Woodworks',
+    name: 'Rahul Sharma',
+    shop: 'RS Woodworks',
     category: 'Woodworker',
     followers: '850',
     products: 12,
     rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300',
-    cover: 'https://images.unsplash.com/photo-1610447193649-65005b821430?auto=format&fit=crop&q=80&w=600'
+    image: 'https://static.vecteezy.com/system/resources/thumbnails/049/174/246/small/a-smiling-young-indian-man-with-formal-shirts-outdoors-photo.jpg',
+    cover: 'https://handsofgold.in/cdn/shop/articles/Untitled-design_png.webp?v=1692601433&width=1100'
   },
   {
     id: 3,
-    name: 'Elena Rostova',
-    shop: 'Elena Ceramics',
+    name: 'Arjun',
+    shop: 'Arjun Ceramics',
     category: 'Ceramics Artist',
     followers: '2.1k',
     products: 45,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcYTqlqPk68ywP19KkzGNTFDGbTZvBhDlnOOha8VdeuvO7R-5xz4yXBZQ&s=10',
     cover: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&q=80&w=600'
   }
 ];
