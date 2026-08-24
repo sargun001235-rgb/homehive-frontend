@@ -19,7 +19,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  let statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
   let message = err.message || 'Internal Server Error';
   let details = null;
   let code = err.code || 'SERVER_ERROR';

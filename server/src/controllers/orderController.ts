@@ -15,7 +15,7 @@ export const createOrder = catchAsync(async (req: AuthRequest, res: Response) =>
     throw new AppError('Cart is empty', 400, 'CART_EMPTY');
   }
 
-  const sellerId = (cart.items[0].product as any).shopId; 
+  const sellerId = (cart.items[0].product as any).sellerId; 
 
   let subtotal = 0;
   const orderItems = [];
